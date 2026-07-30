@@ -1,5 +1,7 @@
 # Seedream Demo — FastAPI LLM/image proxy + clients
 
+[![Tests](https://github.com/0ver1ay/Seedream-Demo/actions/workflows/test.yml/badge.svg)](https://github.com/0ver1ay/Seedream-Demo/actions/workflows/test.yml)
+
 Portfolio demo: a **local FastAPI gateway** in front of Replicate image/LLM models, plus optional Photoshop UXP panel and a Tkinter desktop client.
 
 > Public portfolio cut. Use your own `REPLICATE_API_TOKEN`. No baked secrets in this repo.
@@ -46,4 +48,4 @@ python app.py
 
 ## License
 
-Portfolio / demo use. Replicate and model terms apply to upstream APIs.
+[MIT](LICENSE) — portfolio / demo use. Replicate and model terms apply to upstream APIs.
