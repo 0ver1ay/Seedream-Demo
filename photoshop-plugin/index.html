@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seedream</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h3>Seedream</h3>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="generate">Generate</button>
+        <button class="tab" data-tab="presets">Presets</button>
+        <button class="tab" data-tab="library">Library</button>
+        <button class="tab" data-tab="mixer">Mixer</button>
+        <button class="tab" data-tab="settings">Settings</button>
+      </div>
+
+      <div class="tab-content active" id="tab-generate">
+        <form id="seedream-form">
+          <label for="prompt">Prompt</label>
+          <textarea id="prompt" rows="4" placeholder="Describe the image..."></textarea>
+
+          <div class="grid">
+            <div>
+              <label for="enhancer-model">Enhancer model</label>
+              <select id="enhancer-model">
+                <option value="openai:gpt-5">OpenAI: GPT-5</option>
+                <option value="google:gemini-2.5-pro">Google: Gemini 2.5 Pro</option>
+              </select>
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button id="enhance-prompt" type="button">Enhance</button>
+            </div>
+            <div>
+              <label><input id="use-enhanced" type="checkbox" /> Use enhanced</label>
+            </div>
+          </div>
+
+          <label for="prompt-enhanced">Enhanced prompt</label>
+          <textarea id="prompt-enhanced" rows="3" placeholder="Enhanced prompt will appear here..."></textarea>
+
+          <label for="negative">Negative prompt</label>
+          <textarea id="negative" rows="2" placeholder="Things to avoid (optional)"></textarea>
+
+          <div class="row">
+            <label>Scope</label>
+            <div class="scopes">
+              <label><input type="radio" name="scope" value="current-layer" checked /> Current layer</label>
+              <label><input type="radio" name="scope" value="visible-layers" /> Visible layers</label>
+              <label><input type="radio" name="scope" value="whole-document" /> Whole document</label>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <label for="seed">Seed</label>
+              <input id="seed" type="number" placeholder="Optional" />
+            </div>
+            <div>
+              <label for="steps">Steps</label>
+              <input id="steps" type="number" min="1" max="100" placeholder="e.g. 28" />
+            </div>
+            <div>
+              <label for="guidance">Guidance</label>
+              <input id="guidance" type="number" step="0.1" placeholder="e.g. 7.5" />
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <label for="width">Width</label>
+              <input id="width" type="number" placeholder="Optional" />
+            </div>
+            <div>
+              <label for="height">Height</label>
+              <input id="height" type="number" placeholder="Optional" />
+            </div>
+            <div>
+              <label for="scheduler">Scheduler</label>
+              <input id="scheduler" type="text" placeholder="Optional" />
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <label for="size">Size</label>
+              <select id="size">
+                <option value="">Default</option>
+                <option value="2K">2K</option>
+                <option value="4K">4K</option>
+              </select>
+            </div>
+            <div>
+              <label for="aspect-ratio">Aspect ratio</label>
+              <select id="aspect-ratio">
+                <option value="">Default</option>
+                <option value="match_input_image">match_input_image</option>
+                <option value="1:1">1:1</option>
+                <option value="4:3">4:3</option>
+                <option value="16:9">16:9</option>
+                <option value="21:9">21:9</option>
+                <option value="3:2">3:2</option>
+                <option value="2:3">2:3</option>
+                <option value="9:16">9:16</option>
+                <option value="3:4">3:4</option>
+              </select>
+            </div>
+            <div>
+              <label for="sequential">Sequential</label>
+              <select id="sequential">
+                <option value="auto">auto</option>
+                <option value="disabled">disabled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="max-images">Max images</label>
+            <input id="max-images" type="number" min="1" max="15" value="4" />
+          </div>
+
+          <div class="row">
+            <label for="strength">Strength</label>
+            <input id="strength" type="range" min="0" max="1" step="0.05" value="0.7" />
+            <span id="strength-value">0.70</span>
+          </div>
+
+          <div class="row">
+            <div style="flex:1 1 auto; font-weight:600;">References (max 15)</div>
+            <button id="ref-add-scope" type="button">Add current scope</button>
+            <button id="ref-add-file" type="button">Add from file</button>
+            <button id="ref-clear" type="button">Clear</button>
+          </div>
+          <ul id="refs-list" class="list"></ul>
+
+          <div class="row">
+            <input id="preset-name" type="text" placeholder="Preset name" />
+            <button id="save-preset" type="button">Save preset</button>
+          </div>
+
+          <button id="generate" type="submit">Generate</button>
+          <div id="status" class="status"></div>
+        </form>
+      </div>
+
+      <div class="tab-content" id="tab-presets">
+        <ul id="preset-list" class="list"></ul>
+      </div>
+
+      <div class="tab-content" id="tab-library">
+        <div class="row">
+          <input id="library-name" type="text" placeholder="Entry name" />
+          <button id="library-add" type="button">Add</button>
+        </div>
+        <label for="library-prompt">Prompt</label>
+        <textarea id="library-prompt" rows="3" placeholder="Prompt text"></textarea>
+        <label for="library-negative">Negative</label>
+        <textarea id="library-negative" rows="2" placeholder="Negative text"></textarea>
+        <ul id="library-list" class="list"></ul>
+      </div>
+
+      <div class="tab-content" id="tab-mixer">
+        <div class="row">
+          <button id="mixer-add-from-library" type="button">Add from Library</button>
+          <button id="mixer-clear" type="button">Clear</button>
+        </div>
+        <ul id="mixer-list" class="list"></ul>
+        <div class="row">
+          <label for="mixer-blend">Blend ratio</label>
+          <input id="mixer-blend" type="range" min="0" max="1" step="0.05" value="0.5" />
+          <span id="mixer-blend-value">0.50</span>
+        </div>
+        <div class="row">
+          <button id="mixer-apply" type="button">Apply To Form</button>
+          <button id="mixer-generate" type="button">Generate Mixed</button>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-settings">
+        <h4>API Keys</h4>
+        <div class="list" id="api-keys-list"></div>
+        <div class="grid">
+          <div>
+            <label for="api-provider">Provider</label>
+            <select id="api-provider">
+              <option value="replicate">Replicate</option>
+              <option value="openai">OpenAI</option>
+              <option value="google">Google</option>
+            </select>
+          </div>
+          <div>
+            <label for="api-key">API Key</label>
+            <input id="api-key" type="text" placeholder="Enter API key" />
+          </div>
+        </div>
+        <div class="row">
+          <button id="api-save" type="button">Save key</button>
+          <button id="api-clear" type="button">Clear all</button>
+        </div>
+      </div>
+    </div>
+    <script src="main.js"></script>
+  </body>
+  </html>
+
+

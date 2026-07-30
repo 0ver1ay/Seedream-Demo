@@ -1,0 +1,27 @@
+{
+  "manifestVersion": 5,
+  "id": "com.agenticai.seedream",
+  "name": "Seedream for Photoshop",
+  "version": "0.1.0",
+  "host": {
+    "app": "PHSP",
+    "minVersion": "24.0.0"
+  },
+  "entrypoints": [
+    {
+      "type": "panel",
+      "id": "seedreamPanel",
+      "label": "Seedream",
+      "main": "index.html",
+      "icons": {
+        "light": {
+          "normal": "icons/icon_light.svg"
+        },
+        "dark": {
+          "normal": "icons/icon_dark.svg"
+        }
+      }
+    }
+  ]
+}
+
