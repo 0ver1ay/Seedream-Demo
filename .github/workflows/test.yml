@@ -1,0 +1,27 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          pip install -r server/requirements.txt
+          pip install -r desktop-app/requirements.txt
+          pip install pytest
+      - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          SEEDREAM_RUN_LIVE_REPLICATE: "0"
+        run: pytest -q
